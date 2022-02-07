@@ -10,6 +10,7 @@ class Game:
 
     def setup(self):
         self.all_sprites = Group()
+        self.bullets = Group()
         self.player = Player(self.app)
         self.props = Props(self.app)
 
