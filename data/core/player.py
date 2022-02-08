@@ -1,9 +1,6 @@
-from math import hypot, degrees, atan2
-
-from pygame import K_UP, K_DOWN, K_LEFT, K_RIGHT, MOUSEBUTTONDOWN
+from pygame import K_UP, K_DOWN, K_LEFT, K_RIGHT, MOUSEBUTTONDOWN, K_f, K_w, K_s, K_a, K_d, K_SPACE
 from pygame.image import load
 from pygame.key import get_pressed
-from pygame.mouse import get_pos
 from pygame.sprite import Sprite
 
 from config import join, img_dir, SCREEN_WIDTH, SCREEN_HEIGHT
@@ -22,15 +19,17 @@ class Player(Sprite):
     def update(self):
         self.speed_x, self.speed_y = 0, 0
         key_pressed = get_pressed()
-        if key_pressed[K_UP]: self.speed_y = -self.speed
-        if key_pressed[K_DOWN]: self.speed_y = self.speed
-        if key_pressed[K_LEFT]: self.speed_x = -self.speed
-        if key_pressed[K_RIGHT]: self.speed_x = self.speed
+        if key_pressed[K_w]: self.speed_y = -self.speed
+        if key_pressed[K_s]: self.speed_y = self.speed
+        if key_pressed[K_a]: self.speed_x = -self.speed
+        if key_pressed[K_d]: self.speed_x = self.speed
 
-        for event in self.app.events:
-            if event.type == MOUSEBUTTONDOWN:
-                if event.button == 3:
-                    Bullet(self.app, self.rect.center)
+        if key_pressed[K_SPACE]: Bullet(self.app, self.rect.center)
+
+        # for event in self.app.events:
+        #     if event.type == MOUSEBUTTONDOWN:
+        #         if event.button == 3:
+        #             Bullet(self.app, self.rect.center)
 
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
