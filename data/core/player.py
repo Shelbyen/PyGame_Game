@@ -1,4 +1,4 @@
-from pygame import K_UP, K_DOWN, K_LEFT, K_RIGHT, MOUSEBUTTONDOWN, K_f, K_w, K_s, K_a, K_d, K_SPACE
+from pygame import K_w, K_s, K_a, K_d, K_SPACE
 from pygame.image import load
 from pygame.key import get_pressed
 from pygame.sprite import Sprite

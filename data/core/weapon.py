@@ -28,13 +28,13 @@ class Bullet(Sprite):
 
         self.rect = self.image.get_rect(center=self.pos)
 
-        self.speed = 10
+        self.speed = 20
 
     def update(self):
         key_pressed = get_pressed()
 
         if key_pressed[K_UP]: self.speed += 1
-        if key_pressed[K_DOWN] and self.speed > 0: self.speed -= 1
+        if key_pressed[K_DOWN] and self.speed > 1: self.speed -= 1
 
         self.pos = (self.pos[0] + self.dir[0] * self.speed,
                     self.pos[1] + self.dir[1] * self.speed)
