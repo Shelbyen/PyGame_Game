@@ -1,6 +1,7 @@
 from pygame.sprite import Group
 
 from data.core.game_object import Props
+from data.core.generation_map import Map
 from data.core.player import Player
 
 
@@ -10,6 +11,8 @@ class Game:
 
     def setup(self):
         self.all_sprites = Group()
+        self.map = Map(self.app)
+        self.map.draw()
         self.bullets = Group()
         self.player = Player(self.app)
         self.props = Props(self.app)
