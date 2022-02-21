@@ -8,9 +8,9 @@ from pygame.transform import rotate
 
 
 class Bullet(Sprite):
-    def __init__(self, app, pos):
-        self.app = app
-        super(Bullet, self).__init__(self.app.game.all_sprites, self.app.game.bullets)
+    def __init__(self, game, pos):
+        self.game = game
+        super(Bullet, self).__init__(self.game.all_sprites, self.game.bullets)
 
         self.pos = pos
         mx, my = get_pos()
@@ -40,5 +40,5 @@ class Bullet(Sprite):
                     self.pos[1] + self.dir[1] * self.speed)
         self.rect = self.image.get_rect(center=self.pos)
 
-        if not self.app.screen.get_rect().colliderect(self.rect):
+        if not self.game.app.screen.get_rect().colliderect(self.rect):
             self.kill()

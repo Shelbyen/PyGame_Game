@@ -2,6 +2,7 @@ from pygame.sprite import Group
 
 from data.core.game_object import Props
 from data.core.generation_map import Map
+from data.core.initial import InitTextures
 from data.core.player import Player
 
 
@@ -9,12 +10,15 @@ class Game:
     def __init__(self, app):
         self.app = app
 
-    def setup(self):
         self.all_sprites = Group()
-        self.map = Map(self.app)
-        self.map.draw()
         self.bullets = Group()
-        self.player = Player(self.app)
+
+        self.textures = InitTextures()
+
+        self.map = Map(self)
+        self.map.draw()
+
+        self.player = Player(self)
         self.props = Props(self.app)
 
     def draw(self):
