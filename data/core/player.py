@@ -8,23 +8,24 @@ from data.core.weapon import Bullet
 
 
 class Player(Sprite):
-    def __init__(self, app):
-        self.app = app
-        super().__init__(self.app.game.all_sprites)
+    def __init__(self, game):
+        self.game = game
+        super().__init__(self.game.all_sprites)
         self.image = load(join(img_dir, "char free", "player.png")).convert_alpha()
         self.rect = self.image.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
+
         self.speed = 5
         self.speed_x, self.speed_y = 0, 0
 
     def update(self):
         self.speed_x, self.speed_y = 0, 0
         key_pressed = get_pressed()
-        if key_pressed[K_w]: self.speed_y = -self.speed
-        if key_pressed[K_s]: self.speed_y = self.speed
-        if key_pressed[K_a]: self.speed_x = -self.speed
-        if key_pressed[K_d]: self.speed_x = self.speed
+        if key_pressed[K_w]:        self.speed_y = -self.speed
+        if key_pressed[K_s]:        self.speed_y = self.speed
+        if key_pressed[K_a]:        self.speed_x = -self.speed
+        if key_pressed[K_d]:        self.speed_x = self.speed
 
-        if key_pressed[K_SPACE]: Bullet(self.app, self.rect.center)
+        if key_pressed[K_SPACE]:    Bullet(self.game, self.rect.center)
 
         # for event in self.app.events:
         #     if event.type == MOUSEBUTTONDOWN:

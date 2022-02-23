@@ -10,6 +10,7 @@ core_dir = join(data_dir, "core")
 
 SCREEN_WIDTH = 1600
 SCREEN_HEIGHT = 900
+TILE = 32
 FPS = 60
 
 BLACK = (0, 0, 0)
