@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-from pygame.image import load
-from pygame.sprite import Sprite
-
-from config import join, img_dir, SCREEN_WIDTH, SCREEN_HEIGHT
-
-
-class Map(Sprite):
-    def __init__(self, app):
-        self.app = app
-        super().__init__(self.app.game.all_sprites)
-=======
 from typing import Any
 
 import numpy as np
@@ -20,9 +8,9 @@ from config import TILE
 
 
 class Platform(Sprite):
-    def __init__(self, game, position, image):
+    def __init__(self, game, position, image, group):
         self.game = game
-        super(Platform, self).__init__(self.game.all_sprites)
+        super(Platform, self).__init__(self.game.all_sprites, self.camera_group)
         self.image = image
         self.rect = self.image.get_rect(topleft=position)
 
@@ -30,16 +18,17 @@ class Platform(Sprite):
         if not self.game.app.screen.get_rect().colliderect(self.rect):
             self.kill()
 
+
 class Wall(Platform):
     def __init__(self, game, position):
         self.game = game
-        super(Wall, self).__init__(game=self.game, position=position, image=self.game.textures.wall)
+        super(Wall, self).__init__(self.game, position, self.game.textures.wall)
 
 
 class Floor(Platform):
     def __init__(self, game, position):
         self.game = game
-        super(Floor, self).__init__(game=self.game, position=position, image=self.game.textures.floor)
+        super(Floor, self).__init__(self.game, position, self.game.textures.floor)
 
 
 class Map:
@@ -66,4 +55,3 @@ class Map:
                 x += TILE  # блоки платформы ставятся на ширине блоков
             y += TILE  # то же самое и с высотой
             x = 0
->>>>>>> origin/main

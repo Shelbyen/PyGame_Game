@@ -8,9 +8,9 @@ from data.core.weapon import Bullet
 
 
 class Player(Sprite):
-    def __init__(self, game):
+    def __init__(self, game, group):
         self.game = game
-        super().__init__(self.game.all_sprites)
+        super().__init__(self.game.all_sprites, group)
         self.image = load(join(img_dir, "char free", "player.png")).convert_alpha()
         self.rect = self.image.get_rect(center=(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2))
 

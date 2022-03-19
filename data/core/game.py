@@ -1,5 +1,6 @@
 from pygame.sprite import Group
 
+from data.core.camera import CameraGroup
 from data.core.game_object import Props
 from data.core.generation_map import Map
 from data.core.initial import InitTextures
@@ -14,6 +15,8 @@ class Game:
         self.bullets = Group()
 
         self.textures = InitTextures()
+
+        self.camera_group = CameraGroup()
 
         self.map = Map(self)
         self.map.draw()

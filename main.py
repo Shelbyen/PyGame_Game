@@ -12,7 +12,6 @@ class App:
         self.screen = set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = Clock()
         self.game = Game(self)
-
         self.events = None
 
     def run(self):
