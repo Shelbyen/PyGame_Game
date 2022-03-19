@@ -1,3 +1,4 @@
+from pygame import MOUSEWHEEL
 from pygame.sprite import Group
 
 from data.core.camera import CameraGroup
@@ -18,10 +19,10 @@ class Game:
 
         self.camera_group = CameraGroup()
 
-        self.map = Map(self)
+        self.map = Map(self, self.camera_group)
         self.map.draw()
 
-        self.player = Player(self)
+        self.player = Player(self, self.camera_group)
         self.props = Props(self.app)
 
     def draw(self):
@@ -29,6 +30,14 @@ class Game:
 
     def update(self):
         self.props.update()
+
+        self.camera_group.update()
+        self.camera_group.custom_draw()
+
+        for event in self.app.events:
+            if event.type == MOUSEWHEEL:
+                self.camera_group.zoom_scale += event.y * 0.03
+
         self.all_sprites.update()
 
     def run(self):

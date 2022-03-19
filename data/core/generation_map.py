@@ -10,7 +10,7 @@ from config import TILE
 class Platform(Sprite):
     def __init__(self, game, position, image, group):
         self.game = game
-        super(Platform, self).__init__(self.game.all_sprites, self.camera_group)
+        super(Platform, self).__init__(self.game.all_sprites, group)
         self.image = image
         self.rect = self.image.get_rect(topleft=position)
 
@@ -20,22 +20,23 @@ class Platform(Sprite):
 
 
 class Wall(Platform):
-    def __init__(self, game, position):
+    def __init__(self, game, position, group):
         self.game = game
-        super(Wall, self).__init__(self.game, position, self.game.textures.wall)
+        super(Wall, self).__init__(self.game, position, self.game.textures.wall, group)
 
 
 class Floor(Platform):
-    def __init__(self, game, position):
+    def __init__(self, game, position, group):
         self.game = game
-        super(Floor, self).__init__(self.game, position, self.game.textures.floor)
+        super(Floor, self).__init__(self.game, position, self.game.textures.floor, group)
 
 
 class Map:
-    def __init__(self, game):
+    def __init__(self, game, camera_group):
         self.game = game
         self.level = None
         self.generate_level()
+        self.camera_group = camera_group
 
     def generate_level(self):
         self.level = np.random.uniform(size=(15, 15))
@@ -48,9 +49,9 @@ class Map:
         for row in self.level:  # вся строка
             for col in row:  # каждый символ
                 if col == "Floor":
-                    Floor(game=self.game, position=(x, y))
+                    Floor(game=self.game, position=(x, y), group=self.camera_group)
                 elif col == 'Wall':
-                    Wall(game=self.game, position=(x, y))
+                    Wall(game=self.game, position=(x, y), group=self.camera_group)
 
                 x += TILE  # блоки платформы ставятся на ширине блоков
             y += TILE  # то же самое и с высотой

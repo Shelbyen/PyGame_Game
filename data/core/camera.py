@@ -66,8 +66,3 @@ class CameraGroup(pygame.sprite.Group):
         scaled_rect = scaled_surf.get_rect(center=(self.half_w, self.half_h))
 
         self.display_surface.blit(scaled_surf, scaled_rect)
-
-    def update(self):
-        for event in self.app.events:
-            if event.type == pygame.MOUSEWHEEL:
-                self.zoom_scale += event.y * 0.03

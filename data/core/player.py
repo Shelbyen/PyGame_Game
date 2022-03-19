@@ -1,4 +1,4 @@
-from pygame import K_w, K_s, K_a, K_d, K_SPACE
+from pygame import K_SPACE, K_RIGHT, K_LEFT, K_DOWN, K_UP
 from pygame.image import load
 from pygame.key import get_pressed
 from pygame.sprite import Sprite
@@ -20,10 +20,10 @@ class Player(Sprite):
     def update(self):
         self.speed_x, self.speed_y = 0, 0
         key_pressed = get_pressed()
-        if key_pressed[K_w]:        self.speed_y = -self.speed
-        if key_pressed[K_s]:        self.speed_y = self.speed
-        if key_pressed[K_a]:        self.speed_x = -self.speed
-        if key_pressed[K_d]:        self.speed_x = self.speed
+        if key_pressed[K_UP]:        self.speed_y = -self.speed
+        if key_pressed[K_DOWN]:        self.speed_y = self.speed
+        if key_pressed[K_LEFT]:        self.speed_x = -self.speed
+        if key_pressed[K_RIGHT]:        self.speed_x = self.speed
 
         if key_pressed[K_SPACE]:    Bullet(self.game, self.rect.center)
 
