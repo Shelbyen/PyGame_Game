@@ -1,6 +1,7 @@
 from math import hypot, degrees, atan2
 
 from pygame import Surface, K_e, K_q, K_DOWN, K_UP
+from pygame.display import get_surface
 from pygame.key import get_pressed
 from pygame.mouse import get_pos
 from pygame.sprite import Sprite
@@ -10,7 +11,7 @@ from pygame.transform import rotate
 class Bullet(Sprite):
     def __init__(self, game, pos):
         self.game = game
-        super(Bullet, self).__init__(self.game.all_sprites, self.game.bullets)
+        super(Bullet, self).__init__(self.game.camera_group, self.game.bullets)
 
         self.pos = pos
         mx, my = get_pos()
@@ -40,5 +41,5 @@ class Bullet(Sprite):
                     self.pos[1] + self.dir[1] * self.speed)
         self.rect = self.image.get_rect(center=self.pos)
 
-        if not self.game.app.screen.get_rect().colliderect(self.rect):
+        if not get_surface().get_rect().colliderect(self.rect):
             self.kill()

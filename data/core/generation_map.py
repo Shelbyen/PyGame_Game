@@ -1,6 +1,7 @@
 from typing import Any
 
 import numpy as np
+from pygame.display import get_surface
 from pygame.sprite import Sprite
 from scipy.ndimage.interpolation import zoom
 
@@ -8,15 +9,16 @@ from config import TILE
 
 
 class Platform(Sprite):
-    def __init__(self, game, position, image, group):
+    def __init__(self, game, position, image, group=[]):
         self.game = game
-        super(Platform, self).__init__(self.game.all_sprites, group)
+        super(Platform, self).__init__(self.game.camera_group, *group)
         self.image = image
         self.rect = self.image.get_rect(topleft=position)
 
     def update(self, *args: Any, **kwargs: Any) -> None:
-        if not self.game.app.screen.get_rect().colliderect(self.rect):
-            self.kill()
+        if not get_surface().get_rect().colliderect(self.rect):
+            # Вне прогрузки
+            pass
 
 
 class Wall(Platform):
@@ -26,17 +28,16 @@ class Wall(Platform):
 
 
 class Floor(Platform):
-    def __init__(self, game, position, group):
+    def __init__(self, game, position):
         self.game = game
-        super(Floor, self).__init__(self.game, position, self.game.textures.floor, group)
+        super(Floor, self).__init__(self.game, position, self.game.textures.floor)
 
 
 class Map:
-    def __init__(self, game, camera_group):
+    def __init__(self, game):
         self.game = game
         self.level = None
         self.generate_level()
-        self.camera_group = camera_group
 
     def generate_level(self):
         self.level = np.random.uniform(size=(15, 15))
@@ -49,9 +50,9 @@ class Map:
         for row in self.level:  # вся строка
             for col in row:  # каждый символ
                 if col == "Floor":
-                    Floor(game=self.game, position=(x, y), group=self.camera_group)
+                    Floor(game=self.game, position=(x, y))
                 elif col == 'Wall':
-                    Wall(game=self.game, position=(x, y), group=self.camera_group)
+                    Wall(game=self.game, position=(x, y), group=self.game.walls)
 
                 x += TILE  # блоки платформы ставятся на ширине блоков
             y += TILE  # то же самое и с высотой

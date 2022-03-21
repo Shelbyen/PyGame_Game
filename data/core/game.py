@@ -12,33 +12,32 @@ class Game:
     def __init__(self, app):
         self.app = app
 
-        self.all_sprites = Group()
+        self.camera_group = CameraGroup()
         self.bullets = Group()
+        self.walls = Group()
 
         self.textures = InitTextures()
 
-        self.camera_group = CameraGroup()
-
-        self.map = Map(self, self.camera_group)
+        self.map = Map(self)
         self.map.draw()
 
-        self.player = Player(self, self.camera_group)
-        self.props = Props(self.app)
+        self.player = Player(self)
+        self.props = Props(self)
 
     def draw(self):
-        self.all_sprites.draw(self.app.screen)
+        self.camera_group.custom_draw()
+
 
     def update(self):
         self.props.update()
-
-        self.camera_group.update()
-        self.camera_group.custom_draw()
 
         for event in self.app.events:
             if event.type == MOUSEWHEEL:
                 self.camera_group.zoom_scale += event.y * 0.03
 
-        self.all_sprites.update()
+
+        self.camera_group.update()
+
 
     def run(self):
         self.update()

@@ -8,30 +8,30 @@ from config import join, img_dir
 
 
 class Props:
-    def __init__(self, app):
-        self.app = app
+    def __init__(self, game):
+        self.game = game
         self.types = [Bots]
         self.type = self.types[0]
 
     def update(self):
-        for event in self.app.events:
+        for event in self.game.app.events:
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    self.type(self.app, event.pos)
+                    self.type(self.game, event.pos)
         # mouse_position = get_pos()
         # if self.type == "House":
         #     House(self.app, mouse_position)
 
 
 class Object(Sprite):
-    def __init__(self, app):
-        self.app = app
-        super().__init__(self.app.game.all_sprites)
+    def __init__(self, game):
+        self.game = game
+        super().__init__(self.game.camera_group)
 
 
 class Bots(Object):
-    def __init__(self, app, pos):
-        super(Bots, self).__init__(app)
+    def __init__(self, game, pos):
+        super(Bots, self).__init__(game)
         self.position = pos
         self.image = load(join(img_dir, "bot.png")).convert_alpha()
         self.rect = self.image.get_rect(center=self.position)
@@ -44,7 +44,7 @@ class Bots(Object):
         new_pos = self.mouse_positions[0]
 
         for pos in self.mouse_positions:
-            circle(self.app.screen, (0, 255, 255), (pos[0], pos[1]), 5)
+            circle(self.game.screen, (0, 255, 255), (pos[0], pos[1]), 5)
 
         if new_pos[0] // 10 < self.rect.centerx // 10: self.speed_x = -self.speed
         elif new_pos[0] // 10 > self.rect.centerx // 10: self.speed_x = self.speed
@@ -56,14 +56,14 @@ class Bots(Object):
             self.mouse_positions.pop(0)
 
     def choice(self):
-        circle(self.app.screen, (255, 255, 255), (self.rect.centerx, self.rect.centery), 18, 16)
+        circle(self.game.screen, (255, 255, 255), (self.rect.centerx, self.rect.centery), 18, 16)
 
     def update(self):
         mouse_position = get_pos()
 
         self.speed_x, self.speed_y = 0, 0
 
-        for event in self.app.events:
+        for event in self.game.game.events:
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 3:
                     if self.rect.collidepoint(mouse_position):
