@@ -27,7 +27,7 @@ class CameraGroup(Group):
         self.camera_rect = Rect(l, t, w, h)
 
         # camera speed
-        self.keyboard_speed = 5
+        self.keyboard_speed = 8
         self.mouse_speed = 0.2
 
         # zoom

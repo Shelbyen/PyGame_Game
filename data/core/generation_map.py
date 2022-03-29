@@ -8,6 +8,24 @@ from scipy.ndimage.interpolation import zoom
 from config import TILE
 
 
+class Saver:
+    def __init__(self, game):
+        self.game = game
+        self.blocks = []
+
+    def uploader(self, pos_x, pos_y, name):
+        self.blocks.append((pos_x, pos_y, name))
+
+    def update(self):
+        for block in self.blocks:
+            if get_surface().get_rect().collidepoint(block[0], block[1]):
+                if block[2] == "Floor":
+                    Floor(self.game, (block[0], block[1]))
+                elif block[2] == "Wall":
+                    Wall(self.game, (block[0], block[1]), self.game.walls)
+                self.blocks.remove(block)
+
+
 class Platform(Sprite):
     def __init__(self, game, position, image, group=[]):
         self.game = game
@@ -15,22 +33,27 @@ class Platform(Sprite):
         self.image = image
         self.rect = self.image.get_rect(topleft=position)
 
-    def update(self, *args: Any, **kwargs: Any) -> None:
-        if not get_surface().get_rect().colliderect(self.rect):
-            # Вне прогрузки
-            pass
-
 
 class Wall(Platform):
     def __init__(self, game, position, group):
         self.game = game
         super(Wall, self).__init__(self.game, position, self.game.textures.wall, group)
 
+    def update(self, *args: Any, **kwargs: Any) -> None:
+        if not get_surface().get_rect().colliderect(self.rect):
+            Saver.uploader(self.game.saver, self.rect.centerx, self.rect.centery, "Wall")
+            self.kill()
+
 
 class Floor(Platform):
     def __init__(self, game, position):
         self.game = game
         super(Floor, self).__init__(self.game, position, self.game.textures.floor)
+
+    def update(self, *args: Any, **kwargs: Any) -> None:
+        if not get_surface().get_rect().colliderect(self.rect):
+            Saver.uploader(self.game.saver, self.rect.centerx, self.rect.centery, "Floor")
+            self.kill()
 
 
 class Map:

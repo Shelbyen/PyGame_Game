@@ -63,7 +63,7 @@ class Bots(Object):
 
         self.speed_x, self.speed_y = 0, 0
 
-        for event in self.game.game.events:
+        for event in self.game.app.events:
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 3:
                     if self.rect.collidepoint(mouse_position):
