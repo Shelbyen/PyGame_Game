@@ -39,7 +39,7 @@ class Wall(Platform):
         self.game = game
         super(Wall, self).__init__(self.game, position, self.game.textures.wall, group)
 
-    def update(self, *args: Any, **kwargs: Any) -> None:
+    def update(self):
         if not get_surface().get_rect().colliderect(self.rect):
             Saver.uploader(self.game.saver, self.rect.centerx, self.rect.centery, "Wall")
             self.kill()
@@ -50,7 +50,7 @@ class Floor(Platform):
         self.game = game
         super(Floor, self).__init__(self.game, position, self.game.textures.floor)
 
-    def update(self, *args: Any, **kwargs: Any) -> None:
+    def update(self):
         if not get_surface().get_rect().colliderect(self.rect):
             Saver.uploader(self.game.saver, self.rect.centerx, self.rect.centery, "Floor")
             self.kill()
