@@ -44,7 +44,7 @@ class Bots(Object):
         new_pos = self.mouse_positions[0]
 
         for pos in self.mouse_positions:
-            circle(self.game.screen, (0, 255, 255), (pos[0], pos[1]), 5)
+            circle(self.game.app.screen, (0, 255, 255), (pos[0], pos[1]), 5)
 
         if new_pos[0] // 10 < self.rect.centerx // 10: self.speed_x = -self.speed
         elif new_pos[0] // 10 > self.rect.centerx // 10: self.speed_x = self.speed
@@ -56,7 +56,7 @@ class Bots(Object):
             self.mouse_positions.pop(0)
 
     def choice(self):
-        circle(self.game.screen, (255, 255, 255), (self.rect.centerx, self.rect.centery), 18, 16)
+        circle(self.game.app.screen, (255, 255, 255), (self.rect.centerx, self.rect.centery), 18, 16)
 
     def update(self):
         mouse_position = get_pos()

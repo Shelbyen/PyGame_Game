@@ -1,3 +1,4 @@
+from numba import jit
 from pygame import SRCALPHA, Surface, Rect, K_q, K_e, K_a, K_d, K_w, K_s
 from pygame.display import get_surface
 from pygame.key import get_pressed
@@ -6,6 +7,13 @@ from pygame.sprite import Group
 from pygame.transform import scale
 
 from config import SCREEN_WIDTH, SCREEN_HEIGHT
+
+@jit(nopython=True, parallel=True)
+def get_internal_surface(internal_surf, sprites, offset, internal_offset):
+    for sprite in filter(lambda sprite: internal_surf.get_rect().colliderect(sprite.rect),
+                         sorted(sprites, key=lambda sprite: sprite.rect.centery)):
+        offset_pos = sprite.rect.topleft - offset + internal_offset
+        internal_surf.blit(sprite.image, offset_pos)
 
 
 class CameraGroup(Group):
@@ -52,24 +60,20 @@ class CameraGroup(Group):
 
     def zoom_keyboard_control(self):
         keys = get_pressed()
-        if keys[K_q]:
+        if keys[K_q] and self.zoom_scale <= 1.8:
             self.zoom_scale += 0.1
-        if keys[K_e]:
+        if keys[K_e] and self.zoom_scale >= 0.5:
             self.zoom_scale -= 0.1
 
     def custom_draw(self):
         self.keyboard_control()
         self.zoom_keyboard_control()
-
         self.internal_surf.fill('#000000')
 
         # active elements
-        for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
-            offset_pos = sprite.rect.topleft - self.offset + self.internal_offset
-            self.internal_surf.blit(sprite.image, offset_pos)
+        get_internal_surface(self.internal_surf, self.sprites(), self.offset, self.internal_offset)
 
         scaled_surf = scale(self.internal_surf, tuple(map(int, (self.internal_surface_size_vector * self.zoom_scale))))
         scaled_rect = scaled_surf.get_rect(center=(self.half_w, self.half_h))
 
         self.display_surface.blit(scaled_surf, scaled_rect)
-
