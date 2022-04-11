@@ -1,7 +1,6 @@
-from typing import Any
+import random
 
 import numpy as np
-from pygame.display import get_surface
 from pygame.sprite import Sprite
 from scipy.ndimage.interpolation import zoom
 
@@ -22,6 +21,12 @@ class Wall(Platform):
         super(Wall, self).__init__(self.game, position, self.game.textures.wall, group)
 
 
+class Ore(Platform):
+    def __init__(self, game, position, group):
+        self.game = game
+        super(Ore, self).__init__(self.game, position, self.game.textures.ore, group)
+
+
 class Floor(Platform):
     def __init__(self, game, position):
         self.game = game
@@ -35,7 +40,7 @@ class Map:
         self.generate_level()
 
     def generate_level(self):
-        self.level = np.random.uniform(size=(15, 15))
+        self.level = np.random.uniform(size=(100, 100))
         self.level = zoom(self.level, 12)
         self.level = self.level > 0.8
         self.level = np.where(self.level, 'Wall', 'Floor')
@@ -47,7 +52,10 @@ class Map:
                 if col == "Floor":
                     Floor(game=self.game, position=(x, y))
                 elif col == 'Wall':
-                    Wall(game=self.game, position=(x, y), group=self.game.walls)
+                    if random.randint(1, 100) <= 96:
+                        Wall(game=self.game, position=(x, y), group=self.game.walls)
+                    else:
+                        Ore(game=self.game, position=(x, y), group=self.game.walls)
 
                 x += TILE  # блоки платформы ставятся на ширине блоков
             y += TILE  # то же самое и с высотой

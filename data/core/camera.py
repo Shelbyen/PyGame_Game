@@ -7,13 +7,18 @@ from pygame.sprite import Group
 from pygame.transform import scale
 
 from config import SCREEN_WIDTH, SCREEN_HEIGHT
+from debug import debug
 
-@jit(nopython=True, parallel=True)
+
 def get_internal_surface(internal_surf, sprites, offset, internal_offset):
-    for sprite in filter(lambda sprite: internal_surf.get_rect().colliderect(sprite.rect),
-                         sorted(sprites, key=lambda sprite: sprite.rect.centery)):
+    for sprite in sorted(sprites, key=lambda sprite: sprite.rect.centery):
+        # filter(lambda sprite: internal_surf.get_rect().colliderect(sprite.rect)
         offset_pos = sprite.rect.topleft - offset + internal_offset
-        internal_surf.blit(sprite.image, offset_pos)
+        if (offset_pos.x + sprite.rect.width > 0
+                and offset_pos.y + sprite.rect.height > 0
+                or offset_pos.x - sprite.rect.width < internal_surf.get_width()
+                and offset_pos.y - sprite.rect.height < internal_surf.get_height()):
+            internal_surf.blit(sprite.image, offset_pos)
 
 
 class CameraGroup(Group):
@@ -72,6 +77,7 @@ class CameraGroup(Group):
 
         # active elements
         get_internal_surface(self.internal_surf, self.sprites(), self.offset, self.internal_offset)
+        debug(self.internal_surf.get_rect())
 
         scaled_surf = scale(self.internal_surf, tuple(map(int, (self.internal_surface_size_vector * self.zoom_scale))))
         scaled_rect = scaled_surf.get_rect(center=(self.half_w, self.half_h))
