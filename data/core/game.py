@@ -1,6 +1,7 @@
-from pygame import MOUSEWHEEL
+from pygame import MOUSEWHEEL, KEYDOWN, K_p
 from pygame.sprite import Group
 
+from core.button import Button
 from data.core.camera import CameraGroup
 from data.core.game_object import Props
 from data.core.generation_map import Map
@@ -14,6 +15,7 @@ class Game:
         self.app = app
 
         self.camera_group = CameraGroup()
+        self.buttons = Group()
         self.bullets = Group()
         self.walls = Group()
         self.bots = Group()
@@ -37,6 +39,9 @@ class Game:
         for event in self.app.events:
             if event.type == MOUSEWHEEL:
                 self.camera_group.zoom_scale += event.y * 0.03
+            if event.type == KEYDOWN:
+                if event.key == K_p:
+                    self.app.change_status("Menu")
 
         self.camera_group.update()
 
