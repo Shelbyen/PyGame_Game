@@ -1,8 +1,8 @@
-from numba import jit
 from pygame import SRCALPHA, Surface, Rect, K_q, K_e, K_a, K_d, K_w, K_s
 from pygame.display import get_surface
 from pygame.key import get_pressed
 from pygame.math import Vector2
+from pygame.mouse import get_pos
 from pygame.sprite import Group
 from pygame.transform import scale
 
@@ -77,9 +77,10 @@ class CameraGroup(Group):
 
         # active elements
         get_internal_surface(self.internal_surf, self.sprites(), self.offset, self.internal_offset)
-        debug(self.internal_surf.get_rect())
 
-        scaled_surf = scale(self.internal_surf, tuple(map(int, (self.internal_surface_size_vector * self.zoom_scale))))
-        scaled_rect = scaled_surf.get_rect(center=(self.half_w, self.half_h))
+        self.internal_surf = scale(self.internal_surf, tuple(map(int, (self.internal_surface_size_vector * self.zoom_scale))))
+        self.internal_rect = self.internal_surf.get_rect(center=(self.half_w, self.half_h))
 
-        self.display_surface.blit(scaled_surf, scaled_rect)
+        self.display_surface.blit(self.internal_surf, self.internal_rect)
+        debug(tuple(map(int, (self.internal_surface_size_vector * self.zoom_scale))), y=40)
+        debug((int(get_pos()[0] * self.zoom_scale), int(get_pos()[1] * self.zoom_scale)), y=100)

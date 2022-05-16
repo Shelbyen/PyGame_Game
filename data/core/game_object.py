@@ -24,15 +24,15 @@ class Props:
 
 
 class Object(Sprite):
-    def __init__(self, game):
-        self.game = game
-        super().__init__(self.game.camera_group)
+    def __init__(self, groups):
+        super().__init__(*groups)
 
 
 class Bots(Object):
     def __init__(self, game, pos):
-        super(Bots, self).__init__(game)
-        self.position = pos
+        self.game = game
+        super(Bots, self).__init__((self.game.camera_group, self.game.bots))
+        self.position = pos[0], pos[1]
         self.image = load(join(img_dir, "bot.png")).convert_alpha()
         self.rect = self.image.get_rect(center=self.position)
         self.speed = 5
@@ -46,10 +46,14 @@ class Bots(Object):
         for pos in self.mouse_positions:
             circle(self.game.app.screen, (0, 255, 255), (pos[0], pos[1]), 5)
 
-        if new_pos[0] // 10 < self.rect.centerx // 10: self.speed_x = -self.speed
-        elif new_pos[0] // 10 > self.rect.centerx // 10: self.speed_x = self.speed
-        if new_pos[1] // 10 < self.rect.centery // 10: self.speed_y = -self.speed
-        elif new_pos[1] // 10 > self.rect.centery // 10: self.speed_y = self.speed
+        if new_pos[0] // 10 < self.rect.centerx // 10:
+            self.speed_x = -self.speed
+        elif new_pos[0] // 10 > self.rect.centerx // 10:
+            self.speed_x = self.speed
+        if new_pos[1] // 10 < self.rect.centery // 10:
+            self.speed_y = -self.speed
+        elif new_pos[1] // 10 > self.rect.centery // 10:
+            self.speed_y = self.speed
 
         if self.mouse_positions and (abs(new_pos[0] - self.rect.centerx) < 10
                                      and abs(new_pos[1] - self.rect.centery) < 10):
