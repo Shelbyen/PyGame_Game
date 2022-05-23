@@ -1,7 +1,8 @@
-from pygame import MOUSEWHEEL, KEYDOWN, K_p
+from pygame import MOUSEWHEEL, KEYDOWN, K_ESCAPE
 from pygame.sprite import Group
 
-from core.button import Button
+from config import SCREEN_WIDTH, SCREEN_HEIGHT, B_HEIGHT, B_INTERVAL, B_WIDTH
+from data.core.button import Button
 from data.core.camera import CameraGroup
 from data.core.game_object import Props
 from data.core.generation_map import Map
@@ -28,19 +29,28 @@ class Game:
         self.player = Player(self)
         self.props = Props(self)
 
+        self.exit_button = Button(self,
+                                  (B_WIDTH, B_HEIGHT),
+                                  "menu", self.back_menu)
+
+    def back_menu(self):
+        self.app.change_status("Menu")
+
     def draw(self):
         self.camera_group.custom_draw()
+        self.buttons.draw(self.app.screen)
         if self.bots:
             debug(list(bot.position for bot in self.bots.sprites()), y=70)
 
     def update(self):
         self.props.update()
+        self.buttons.update()
 
         for event in self.app.events:
             if event.type == MOUSEWHEEL:
                 self.camera_group.zoom_scale += event.y * 0.03
             if event.type == KEYDOWN:
-                if event.key == K_p:
+                if event.key == K_ESCAPE:
                     self.app.change_status("Menu")
 
         self.camera_group.update()

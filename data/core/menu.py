@@ -1,10 +1,7 @@
-from pygame import MOUSEBUTTONDOWN
-from pygame.mouse import get_pos
 from pygame.sprite import Group
 
-from config import SCREEN_WIDTH, SCREEN_HEIGHT
-from core.button import Button
-from core.game import Game
+from config import SCREEN_WIDTH, SCREEN_HEIGHT, B_HEIGHT, B_INTERVAL
+from data.core.button import Button
 from data.core.initial import InitTextures
 
 
@@ -15,18 +12,33 @@ class Menu:
         self.buttons = Group()
         self.textures = InitTextures()
 
-        self.play_button = Button(self, (SCREEN_WIDTH // 2 - 128, SCREEN_HEIGHT // 2))
+        self.play_button = Button(self,
+                                  (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 1.5 * B_HEIGHT - B_INTERVAL),
+                                  "play", self.play)
+
+        self.load_button = Button(self,
+                                  (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - B_HEIGHT // 2 - B_INTERVAL // 2),
+                                  "load", self.pass_func)
+
+        self.settings_button = Button(self,
+                                  (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + B_HEIGHT // 2 + B_INTERVAL // 2),
+                                  "settings", self.pass_func)
+
+        self.exit_button = Button(self,
+                                  (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 1.5 * B_HEIGHT + B_INTERVAL),
+                                  "exit", exit)
 
     def draw(self):
         self.buttons.draw(self.app.screen)
 
+    def play(self):
+        self.app.change_status("Game")
+
+    def pass_func(self):
+        pass
+
     def update(self):
-        mouse_pos = get_pos()
-        if self.play_button.rect.collidepoint(mouse_pos):
-            for event in self.app.events:
-                if event.type == MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        self.app.change_status("Game")
+        self.buttons.update()
 
     def run(self):
         self.update()
