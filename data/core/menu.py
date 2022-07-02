@@ -1,7 +1,7 @@
 from pygame.sprite import Group
 
 from config import SCREEN_WIDTH, SCREEN_HEIGHT, B_HEIGHT, B_INTERVAL
-from data.core.button import Button
+from data.gui.button import Button
 from data.core.initial import InitTextures
 
 

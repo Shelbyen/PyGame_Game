@@ -1,3 +1,4 @@
+import pygame
 from pygame import MOUSEBUTTONDOWN, K_r, KEYDOWN
 from pygame.draw import circle
 from pygame.image import load
@@ -10,17 +11,16 @@ from config import join, img_dir
 class Props:
     def __init__(self, game):
         self.game = game
-        self.types = [Bots]
+        self.types = [Factory]
         self.type = self.types[0]
 
     def update(self):
         for event in self.game.app.events:
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    self.type(self.game, event.pos)
-        # mouse_position = get_pos()
-        # if self.type == "House":
-        #     House(self.app, mouse_position)
+                    print()
+                    pos = event.pos[0]//32*32, event.pos[1]//32*32
+                    self.type(self.game, pos)
 
 
 class Object(Sprite):
@@ -88,3 +88,14 @@ class Bots(Object):
 
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
+
+
+class Factory(Object):
+    def __init__(self, game, pos, rotate=0):
+        self.game = game
+        super(Factory, self).__init__((self.game.camera_group, self.game.factories))
+        self.position = pos[0], pos[1]
+        self.image = load(join(img_dir, "factories", "factory_green.png")).convert_alpha()
+        self.image = pygame.transform.rotate(self.image, rotate)
+        self.rect = self.image.get_rect(center=self.position)
+        self.choice_on = False
