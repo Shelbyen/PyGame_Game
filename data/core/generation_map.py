@@ -15,10 +15,6 @@ class Platform(Sprite):
         self.rect = self.image.get_rect(topleft=position)
 
 
-    # def update(self):
-    #     self.rect.collidepoint()
-
-
 class Wall(Platform):
     def __init__(self, game, position, group):
         self.game = game

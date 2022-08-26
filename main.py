@@ -1,3 +1,4 @@
+import pygame
 from pygame import QUIT
 from pygame.display import set_mode, flip, set_caption
 from pygame.event import get
@@ -5,7 +6,7 @@ from pygame.time import Clock
 
 from config import SCREEN_HEIGHT, SCREEN_WIDTH, FPS, BLACK, State
 from data.core.game import Game
-from data.core.menu import Menu
+from data.core.main_menu import Menu
 
 
 class App:

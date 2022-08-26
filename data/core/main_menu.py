@@ -9,7 +9,7 @@ class Menu:
     def __init__(self, app):
         self.app = app
 
-        self.buttons = Group()
+        self.gui = Group()
         self.textures = InitTextures()
 
         self.play_button = Button(self,
@@ -29,7 +29,7 @@ class Menu:
                                   "exit", exit)
 
     def draw(self):
-        self.buttons.draw(self.app.screen)
+        self.gui.draw(self.app.screen)
 
     def play(self):
         self.app.change_status("Game")
@@ -38,7 +38,7 @@ class Menu:
         pass
 
     def update(self):
-        self.buttons.update()
+        self.gui.update()
 
     def run(self):
         self.update()

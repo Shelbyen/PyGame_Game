@@ -5,7 +5,7 @@ from pygame.image import load
 from pygame.mouse import get_pos
 from pygame.sprite import Sprite
 
-from config import join, img_dir
+from config import join, img_dir, TILE
 
 
 class Props:
@@ -16,10 +16,9 @@ class Props:
 
     def update(self):
         for event in self.game.app.events:
-            if event.type == MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    print()
-                    pos = event.pos[0]//32*32, event.pos[1]//32*32
+            if event.type == MOUSEBUTTONDOWN and event.button == 1:
+                if self.game.state == "in_game":
+                    pos = event.pos[0]//TILE * TILE, event.pos[1]//TILE * TILE
                     self.type(self.game, pos)
 
 
