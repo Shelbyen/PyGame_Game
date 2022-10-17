@@ -1,4 +1,4 @@
-from pygame import KEYDOWN, K_ESCAPE
+from pygame import KEYDOWN, K_ESCAPE, MOUSEMOTION, MOUSEBUTTONDOWN
 from pygame.sprite import Group
 
 from data.core.camera import CameraGroup
@@ -39,9 +39,13 @@ class Game:
 
     def update(self):
         self.props.update()
-        self.pause_menu.gui.update()
+        self.pause_menu.update()
 
         for event in self.app.events:
+            if event.type == MOUSEMOTION:
+                self.camera_group.keyboard_control(event)
+            if event.type == MOUSEBUTTONDOWN:
+                self.camera_group.zoom_keyboard_control(event)
             if event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     if self.state != [0]:

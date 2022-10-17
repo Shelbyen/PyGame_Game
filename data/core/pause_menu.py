@@ -42,6 +42,7 @@ class PauseMenu:
             self.pause_menu.draw(self.game.app.screen)
         elif self.game.state == [1, 0]:
             self.save_menu.draw(self.game.app.screen)
+            self.change_save_name.draw(self.game.app.screen)
 
     def update(self):
         if self.game.state == [1]:
