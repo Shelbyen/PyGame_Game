@@ -25,19 +25,24 @@ class CameraGroup(Group):
             self.camera_x -= event.rel[0] * self.zoom_scale
             self.camera_y -= event.rel[1] * self.zoom_scale
 
-    def zoom_keyboard_control(self, event):
-        mouse_pos_x = event.pos[0]
-        mouse_pos_y = event.pos[1]
+    def zoom_control(self, button, pos=None):
+        if pos:
+            mouse_pos_x = pos[0]
+            mouse_pos_y = pos[1]
+        else:
+            mouse_pos_x = SCREEN_WIDTH // 2
+            mouse_pos_y = SCREEN_HEIGHT // 2
+
         jump_x = self.camera_x + mouse_pos_x * self.zoom_scale
         jump_y = self.camera_y + mouse_pos_y * self.zoom_scale
 
-        if event.button == 4:
+        if button == 4:
             self.zoom_scale = self.zoom_scale * 0.85
 
             self.camera_x = jump_x - mouse_pos_x * self.zoom_scale
             self.camera_y = jump_y - mouse_pos_y * self.zoom_scale
 
-        if event.button == 5:
+        if button == 5:
             self.zoom_scale = self.zoom_scale / 0.85
 
             self.camera_x = jump_x - mouse_pos_x * self.zoom_scale

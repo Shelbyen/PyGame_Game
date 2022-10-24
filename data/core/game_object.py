@@ -18,7 +18,7 @@ class Props:
         for event in self.game.app.events:
             if event.type == MOUSEBUTTONDOWN and event.button == 1:
                 if self.game.state == "in_game":
-                    pos = event.pos[0]//TILE * TILE, event.pos[1]//TILE * TILE
+                    pos = event.pos[0] // TILE * TILE, event.pos[1] // TILE * TILE
                     self.type(self.game, pos)
 
 

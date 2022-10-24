@@ -18,10 +18,12 @@ B_WIDTH = 256
 B_HEIGHT = 82
 B_INTERVAL = 6
 
+MINIMAP_SIZE = 200
+
 font.init()
 COLOR_INACTIVE = Color('lightskyblue3')
 COLOR_ACTIVE = Color('dodgerblue2')
-FONT = font.Font(None, 50)
+FONT = font.Font(None, 32)
 
 TILE = 32
 FPS = 60

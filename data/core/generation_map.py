@@ -40,7 +40,7 @@ class Map:
         self.generate_level()
 
     def generate_level(self):
-        self.level = np.random.uniform(size=(10, 10))
+        self.level = np.random.uniform(size=(8, 8))
         self.level = zoom(self.level, 12)
         self.level = self.level > 0.8
         self.level = np.where(self.level, 'Wall', 'Floor')
